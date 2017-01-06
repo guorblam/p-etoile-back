@@ -3,8 +3,14 @@ namespace AppBundle\Entity;
 
 class Credentials
 {
+    /**
+     * login unique de l'utilisateur
+     */
     protected $login;
 
+    /**
+     * Password de l'utilisateur
+     */
     protected $password;
 
     public function getLogin()

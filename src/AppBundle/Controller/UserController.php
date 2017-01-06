@@ -10,10 +10,16 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
 use AppBundle\Form\Type\UserType;
 use AppBundle\Entity\User;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class UserController extends Controller
 {
     /**
+     * @ApiDoc(
+     *    description="Récupère la liste des utilisateurs de l'application",
+     *    output= { "class"=User::class, "collection"=true, "groups"={"user"}}
+     * )
+     *
      * @Rest\View(serializerGroups={"user"})
      * @Rest\Get("/users")
      */
@@ -28,6 +34,10 @@ class UserController extends Controller
     }
 
     /**
+     * @ApiDoc(
+     *    description="Récupère un utilisateur de l'application",
+     *    output= { "class"=User::class, "collection"=true, "groups"={"user"}}
+     * )
      * @Rest\View(serializerGroups={"user"})
      * @Rest\Get("/users/{user_id}")
      */
@@ -46,7 +56,20 @@ class UserController extends Controller
     }
 
     /**
-     * @Rest\View(serializerGroups={"user"})
+     * @ApiDoc(
+     *    description="Crée un utilisateur dans l'application",
+     *    input={"class"=UserType::class, "name"=""},
+     *    statusCodes = {
+     *        201 = "Création avec succès",
+     *        400 = "Formulaire invalide"
+     *    },
+     *    responseMap={
+     *         201 = {"class"=User::class, "groups"={"user"}},
+     *         400 = { "class"=UserType::class, "form_errors"=true, "name" = ""}
+     *    }
+     * )
+     *
+     * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"user"})
      * @Rest\Post("/addUser")
      */
     public function postUsersAction(Request $request)
@@ -71,6 +94,19 @@ class UserController extends Controller
     }
 
     /**
+     * @ApiDoc(
+     *    description="Mise à jour totale d'un utilisateur",
+     *    input={"class"=UserType::class, "name"=""},
+     *    statusCodes = {
+     *        201 = "Mise à jour avec succès",
+     *        400 = "Formulaire invalide"
+     *    },
+     *    responseMap={
+     *         201 = {"class"=User::class, "groups"={"user"}},
+     *         400 = { "class"=UserType::class, "form_errors"=true, "name" = ""}
+     *    }
+     * )
+     *
      * @Rest\View(serializerGroups={"user"})
      * @Rest\Put("/users/{id}")
      */
@@ -80,6 +116,18 @@ class UserController extends Controller
     }
 
     /**
+     * @ApiDoc(
+     *    description="Mise à jour partielle d'un utilisateur",
+     *    input={"class"=UserType::class, "name"=""},
+     *    statusCodes = {
+     *        201 = "Mise à jour avec succès",
+     *        400 = "Formulaire invalide"
+     *    },
+     *    responseMap={
+     *         201 = {"class"=User::class, "groups"={"user"}},
+     *         400 = { "class"=UserType::class, "form_errors"=true, "name" = ""}
+     *    }
+     * )
      * @Rest\View(serializerGroups={"user"})
      * @Rest\Patch("/users/{id}")
      */

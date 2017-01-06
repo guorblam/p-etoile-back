@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 class AuthToken
 {
     /**
+     * identifiant du token
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
@@ -19,17 +21,23 @@ class AuthToken
     protected $id;
 
     /**
+     * valeurs du token
+     *
      * @ORM\Column(type="string")
      */
     protected $value;
 
     /**
+     * date de création du token
+     *
      * @ORM\Column(type="datetime")
      * @var \DateTime
      */
     protected $createdAt;
 
     /**
+     * utilisateur associé au token
+     *
      * @ORM\ManyToOne(targetEntity="User")
      * @var User
      */

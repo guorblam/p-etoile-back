@@ -9,10 +9,24 @@ use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les anno
 use AppBundle\Form\Type\CredentialsType;
 use AppBundle\Entity\AuthToken;
 use AppBundle\Entity\Credentials;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class AuthTokenController extends Controller
 {
     /**
+     * @ApiDoc(
+     *    description="Crée un token pour un utilisateur",
+     *    input={"class"=CredentialsType::class, "name"=""},
+     *    statusCodes = {
+     *        201 = "Création avec succès",
+     *        400 = "Formulaire invalide"
+     *    },
+     *    responseMap={
+     *         201 = {"class"=Credentials::class},
+     *         400 = { "class"=CredentialsType::class, "form_errors"=true, "name" = ""}
+     *    }
+     * )
+     *
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"auth-token"})
      * @Rest\Post("/auth-tokens")
      */
@@ -55,6 +69,11 @@ class AuthTokenController extends Controller
     }
 
     /**
+     * @ApiDoc(
+     *    description="Supprime un token pour un utilisateur",
+     *    input={"class"=CredentialsType::class, "name"=""}
+     * )
+     *
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
      * @Rest\Delete("/auth-tokens/{id}")
      */

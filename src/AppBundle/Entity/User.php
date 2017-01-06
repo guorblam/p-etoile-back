@@ -14,6 +14,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 class User implements UserInterface
 {
     /**
+     * Identifiant unique de l'utilisateur
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
@@ -21,21 +23,29 @@ class User implements UserInterface
     protected $id;
 
     /**
+     * Prénom de l'utilisateur
+     *
      * @ORM\Column(type="string")
      */
     protected $firstname;
 
     /**
+     * Nom de famille de l'utilisateur
+     *
      * @ORM\Column(type="string")
      */
     protected $lastname;
 
     /**
+     * Email de l'utilsateur
+     *
      * @ORM\Column(type="string")
      */
     protected $email;
 
     /**
+     * Mot de passe de l'utilisateur (encodé)
+     *
      * @ORM\Column(type="string")
      */
     protected $password;
