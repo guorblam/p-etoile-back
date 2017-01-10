@@ -16,8 +16,9 @@ class UserController extends Controller
 {
     /**
      * @ApiDoc(
+     *    resource=true,
      *    description="Récupère la liste des utilisateurs de l'application",
-     *    output= { "class"=User::class, "collection"=true, "groups"={"user"}}
+     *    output= { "class"=User::class, "groups"={"user"}}
      * )
      *
      * @Rest\View(serializerGroups={"user"})
@@ -35,8 +36,9 @@ class UserController extends Controller
 
     /**
      * @ApiDoc(
+     *    resource=true,
      *    description="Récupère un utilisateur de l'application",
-     *    output= { "class"=User::class, "collection"=true, "groups"={"user"}}
+     *    output= { "class"=User::class, "groups"={"user"}}
      * )
      * @Rest\View(serializerGroups={"user"})
      * @Rest\Get("/users/{user_id}")
@@ -57,6 +59,7 @@ class UserController extends Controller
 
     /**
      * @ApiDoc(
+     *    resource=true,
      *    description="Crée un utilisateur dans l'application",
      *    input={"class"=UserType::class, "name"=""},
      *    statusCodes = {
@@ -65,7 +68,7 @@ class UserController extends Controller
      *    },
      *    responseMap={
      *         201 = {"class"=User::class, "groups"={"user"}},
-     *         400 = { "class"=UserType::class, "form_errors"=true, "name" = ""}
+     *         400 = { "class"=UserType::class, "fos_rest_form_errors"=true, "name" = ""}
      *    }
      * )
      *
@@ -95,6 +98,7 @@ class UserController extends Controller
 
     /**
      * @ApiDoc(
+     *    resource=true,
      *    description="Mise à jour totale d'un utilisateur",
      *    input={"class"=UserType::class, "name"=""},
      *    statusCodes = {
@@ -103,7 +107,7 @@ class UserController extends Controller
      *    },
      *    responseMap={
      *         201 = {"class"=User::class, "groups"={"user"}},
-     *         400 = { "class"=UserType::class, "form_errors"=true, "name" = ""}
+     *         400 = { "class"=UserType::class, "fos_rest_form_errors"=true, "name" = ""}
      *    }
      * )
      *
@@ -117,6 +121,7 @@ class UserController extends Controller
 
     /**
      * @ApiDoc(
+     *    resource=true,
      *    description="Mise à jour partielle d'un utilisateur",
      *    input={"class"=UserType::class, "name"=""},
      *    statusCodes = {
@@ -125,7 +130,7 @@ class UserController extends Controller
      *    },
      *    responseMap={
      *         201 = {"class"=User::class, "groups"={"user"}},
-     *         400 = { "class"=UserType::class, "form_errors"=true, "name" = ""}
+     *         400 = { "class"=UserType::class, "fos_rest_form_errors"=true, "name" = ""}
      *    }
      * )
      * @Rest\View(serializerGroups={"user"})

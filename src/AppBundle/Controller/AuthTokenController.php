@@ -15,6 +15,7 @@ class AuthTokenController extends Controller
 {
     /**
      * @ApiDoc(
+     *    resource=true,
      *    description="Crée un token pour un utilisateur",
      *    input={"class"=CredentialsType::class, "name"=""},
      *    statusCodes = {
@@ -22,8 +23,8 @@ class AuthTokenController extends Controller
      *        400 = "Formulaire invalide"
      *    },
      *    responseMap={
-     *         201 = {"class"=Credentials::class},
-     *         400 = { "class"=CredentialsType::class, "form_errors"=true, "name" = ""}
+     *         201 = {"class"=AuthToken::class, "groups"={"auth-token"}},
+     *         400 = { "class"=CredentialsType::class, "fos_rest_form_errors"=true, "name" = ""}
      *    }
      * )
      *
@@ -70,6 +71,7 @@ class AuthTokenController extends Controller
 
     /**
      * @ApiDoc(
+     *    resource=true,
      *    description="Supprime un token pour un utilisateur",
      *    input={"class"=CredentialsType::class, "name"=""}
      * )
@@ -81,7 +83,7 @@ class AuthTokenController extends Controller
     {
         $em = $this->get('doctrine.orm.entity_manager');
         $authToken = $em->getRepository('AppBundle:AuthToken')
-                    ->find($request->get('id'));
+            ->find($request->get('id'));
         /* @var $authToken AuthToken */
 
         $connectedUser = $this->get('security.token_storage')->getToken()->getUser();

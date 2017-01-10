@@ -1,0 +1,240 @@
+{
+    "swaggerVersion": "1.2",
+    "apiVersion": "1.0",
+    "basePath": "\/",
+    "resourcePath": "\/addUser",
+    "apis": [
+        {
+            "path": "\/addUser",
+            "operations": [
+                {
+                    "method": "POST",
+                    "summary": "Cr\u00e9e un utilisateur dans l'application",
+                    "nickname": "post_addUser",
+                    "parameters": [
+                        {
+                            "paramType": "form",
+                            "name": "firstname",
+                            "type": "string",
+                            "description": "Pr\u00e9nom de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "lastname",
+                            "type": "string",
+                            "description": "Nom de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "plainPassword",
+                            "type": "string",
+                            "description": "Mot de passe de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "email",
+                            "type": "string",
+                            "description": "email de l'utilisateur"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 201,
+                            "message": "Cr\u00e9ation avec succ\u00e8s",
+                            "responseModel": "AppBundle.Entity.User"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Formulaire invalide",
+                            "responseModel": "AppBundle.Form.Type.UserType"
+                        }
+                    ]
+                },
+                {
+                    "method": "POST",
+                    "summary": "Cr\u00e9e un utilisateur dans l'application",
+                    "nickname": "post_addUser",
+                    "parameters": [
+                        {
+                            "paramType": "form",
+                            "name": "firstname",
+                            "type": "string",
+                            "description": "Pr\u00e9nom de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "lastname",
+                            "type": "string",
+                            "description": "Nom de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "plainPassword",
+                            "type": "string",
+                            "description": "Mot de passe de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "email",
+                            "type": "string",
+                            "description": "email de l'utilisateur"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 201,
+                            "message": "Cr\u00e9ation avec succ\u00e8s",
+                            "responseModel": "AppBundle.Entity.User"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Formulaire invalide",
+                            "responseModel": "AppBundle.Form.Type.UserType"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "models": {
+        "AppBundle.Entity.User": {
+            "id": "AppBundle.Entity.User",
+            "description": "",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "Identifiant unique de l'utilisateur",
+                    "format": "int32"
+                },
+                "firstname": {
+                    "type": "string",
+                    "description": "Pr\u00e9nom de l'utilisateur"
+                },
+                "lastname": {
+                    "type": "string",
+                    "description": "Nom de famille de l'utilisateur"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email de l'utilsateur"
+                }
+            },
+            "required": []
+        },
+        "AppBundle.Form.Type.UserType.FieldErrors[firstname]": {
+            "id": "AppBundle.Form.Type.UserType.FieldErrors[firstname]",
+            "description": "Field name",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "description": "List of field error messages",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": []
+        },
+        "AppBundle.Form.Type.UserType.FieldErrors[lastname]": {
+            "id": "AppBundle.Form.Type.UserType.FieldErrors[lastname]",
+            "description": "Field name",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "description": "List of field error messages",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": []
+        },
+        "AppBundle.Form.Type.UserType.FieldErrors[plainPassword]": {
+            "id": "AppBundle.Form.Type.UserType.FieldErrors[plainPassword]",
+            "description": "Field name",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "description": "List of field error messages",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": []
+        },
+        "AppBundle.Form.Type.UserType.FieldErrors[email]": {
+            "id": "AppBundle.Form.Type.UserType.FieldErrors[email]",
+            "description": "Field name",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "description": "List of field error messages",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": []
+        },
+        "AppBundle.Form.Type.UserType.Children": {
+            "id": "AppBundle.Form.Type.UserType.Children",
+            "description": "Errors",
+            "properties": {
+                "firstname": {
+                    "$ref": "AppBundle.Form.Type.UserType.FieldErrors[firstname]"
+                },
+                "lastname": {
+                    "$ref": "AppBundle.Form.Type.UserType.FieldErrors[lastname]"
+                },
+                "plainPassword": {
+                    "$ref": "AppBundle.Form.Type.UserType.FieldErrors[plainPassword]"
+                },
+                "email": {
+                    "$ref": "AppBundle.Form.Type.UserType.FieldErrors[email]"
+                }
+            },
+            "required": []
+        },
+        "AppBundle.Form.Type.UserType.FormErrors": {
+            "id": "AppBundle.Form.Type.UserType.FormErrors",
+            "description": "List of errors",
+            "properties": {
+                "children": {
+                    "$ref": "AppBundle.Form.Type.UserType.Children"
+                }
+            },
+            "required": []
+        },
+        "AppBundle.Form.Type.UserType": {
+            "id": "AppBundle.Form.Type.UserType",
+            "description": "",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "description": "The status code",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "The error message"
+                },
+                "errors": {
+                    "$ref": "AppBundle.Form.Type.UserType.FormErrors"
+                }
+            },
+            "required": [
+                "message"
+            ]
+        }
+    },
+    "produces": [],
+    "consumes": [],
+    "authorizations": {
+        "apiKey": {
+            "type": "apiKey",
+            "passAs": "header",
+            "keyname": "X-Auth-Token"
+        }
+    }
+}

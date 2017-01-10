@@ -100,3 +100,33 @@ jms_serializer:
         datetime:
             default_format: "Y-m-d\\TH:i:sP"
             default_timezone: "UTC"
+
+nelmio_api_doc:
+    sandbox:
+        enabled:  true  # Juste pour la lisibilité car true est déjà la valeur par défaut
+        endpoint: http://rest-api.local
+
+        authentication:
+            name: X-Auth-Token
+            delivery: header
+
+        accept_type: application/json   # valeur par défaut de l'entête Accept
+
+        body_format:
+            formats: [ json, xml ]
+            default_format: json
+
+        request_format:
+            formats:
+                json: application/json
+                xml: application/xml
+
+            method: accept_header
+            default_format: json
+    swagger:
+        api_base_path:        /
+        swagger_version:      '1.2'
+        api_version:          '1.0'
+        info:
+            title:                Rest API
+            description:          'Proposition de sortie aux utilisateurs'

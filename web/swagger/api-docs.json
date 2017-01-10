@@ -1,0 +1,77 @@
+{
+    "swaggerVersion": "1.2",
+    "apis": [
+        {
+            "path": "\/addUser",
+            "description": null
+        },
+        {
+            "path": "\/addUser",
+            "description": null
+        },
+        {
+            "path": "\/auth-tokens",
+            "description": null
+        },
+        {
+            "path": "\/auth-tokens",
+            "description": null
+        },
+        {
+            "path": "\/auth-tokens",
+            "description": null
+        },
+        {
+            "path": "\/auth-tokens",
+            "description": null
+        },
+        {
+            "path": "\/users",
+            "description": null
+        },
+        {
+            "path": "\/users",
+            "description": null
+        },
+        {
+            "path": "\/users",
+            "description": null
+        },
+        {
+            "path": "\/users",
+            "description": null
+        },
+        {
+            "path": "\/users",
+            "description": null
+        },
+        {
+            "path": "\/users",
+            "description": null
+        },
+        {
+            "path": "\/users",
+            "description": null
+        },
+        {
+            "path": "\/users",
+            "description": null
+        }
+    ],
+    "apiVersion": "1.0",
+    "info": {
+        "title": "Rest API",
+        "description": "Proposition de sortie aux utilisateurs",
+        "TermsOfServiceUrl": null,
+        "contact": null,
+        "license": null,
+        "licenseUrl": null
+    },
+    "authorizations": {
+        "apiKey": {
+            "type": "apiKey",
+            "passAs": "header",
+            "keyname": "X-Auth-Token"
+        }
+    }
+}

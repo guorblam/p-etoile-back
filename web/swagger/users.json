@@ -1,0 +1,430 @@
+{
+    "swaggerVersion": "1.2",
+    "apiVersion": "1.0",
+    "basePath": "\/",
+    "resourcePath": "\/users",
+    "apis": [
+        {
+            "path": "\/users",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "R\u00e9cup\u00e8re la liste des utilisateurs de l'application",
+                    "nickname": "get_users",
+                    "parameters": [],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "See standard HTTP status code reason for 200",
+                            "responseModel": "AppBundle.Entity.User"
+                        }
+                    ],
+                    "type": "AppBundle.Entity.User"
+                },
+                {
+                    "method": "GET",
+                    "summary": "R\u00e9cup\u00e8re la liste des utilisateurs de l'application",
+                    "nickname": "get_users",
+                    "parameters": [],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "See standard HTTP status code reason for 200",
+                            "responseModel": "AppBundle.Entity.User"
+                        }
+                    ],
+                    "type": "AppBundle.Entity.User"
+                }
+            ]
+        },
+        {
+            "path": "\/users\/{id}",
+            "operations": [
+                {
+                    "method": "PATCH",
+                    "summary": "Mise \u00e0 jour partielle d'un utilisateur",
+                    "nickname": "patch_users",
+                    "parameters": [
+                        {
+                            "paramType": "path",
+                            "name": "id",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "firstname",
+                            "type": "string",
+                            "description": "Pr\u00e9nom de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "lastname",
+                            "type": "string",
+                            "description": "Nom de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "plainPassword",
+                            "type": "string",
+                            "description": "Mot de passe de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "email",
+                            "type": "string",
+                            "description": "email de l'utilisateur"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 201,
+                            "message": "Mise \u00e0 jour avec succ\u00e8s",
+                            "responseModel": "AppBundle.Entity.User"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Formulaire invalide",
+                            "responseModel": "AppBundle.Form.Type.UserType"
+                        }
+                    ]
+                },
+                {
+                    "method": "PATCH",
+                    "summary": "Mise \u00e0 jour partielle d'un utilisateur",
+                    "nickname": "patch_users",
+                    "parameters": [
+                        {
+                            "paramType": "path",
+                            "name": "id",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "firstname",
+                            "type": "string",
+                            "description": "Pr\u00e9nom de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "lastname",
+                            "type": "string",
+                            "description": "Nom de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "plainPassword",
+                            "type": "string",
+                            "description": "Mot de passe de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "email",
+                            "type": "string",
+                            "description": "email de l'utilisateur"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 201,
+                            "message": "Mise \u00e0 jour avec succ\u00e8s",
+                            "responseModel": "AppBundle.Entity.User"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Formulaire invalide",
+                            "responseModel": "AppBundle.Form.Type.UserType"
+                        }
+                    ]
+                },
+                {
+                    "method": "PUT",
+                    "summary": "Mise \u00e0 jour totale d'un utilisateur",
+                    "nickname": "put_users",
+                    "parameters": [
+                        {
+                            "paramType": "path",
+                            "name": "id",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "firstname",
+                            "type": "string",
+                            "description": "Pr\u00e9nom de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "lastname",
+                            "type": "string",
+                            "description": "Nom de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "plainPassword",
+                            "type": "string",
+                            "description": "Mot de passe de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "email",
+                            "type": "string",
+                            "description": "email de l'utilisateur"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 201,
+                            "message": "Mise \u00e0 jour avec succ\u00e8s",
+                            "responseModel": "AppBundle.Entity.User"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Formulaire invalide",
+                            "responseModel": "AppBundle.Form.Type.UserType"
+                        }
+                    ]
+                },
+                {
+                    "method": "PUT",
+                    "summary": "Mise \u00e0 jour totale d'un utilisateur",
+                    "nickname": "put_users",
+                    "parameters": [
+                        {
+                            "paramType": "path",
+                            "name": "id",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "firstname",
+                            "type": "string",
+                            "description": "Pr\u00e9nom de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "lastname",
+                            "type": "string",
+                            "description": "Nom de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "plainPassword",
+                            "type": "string",
+                            "description": "Mot de passe de l'utilisateur"
+                        },
+                        {
+                            "paramType": "form",
+                            "name": "email",
+                            "type": "string",
+                            "description": "email de l'utilisateur"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 201,
+                            "message": "Mise \u00e0 jour avec succ\u00e8s",
+                            "responseModel": "AppBundle.Entity.User"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Formulaire invalide",
+                            "responseModel": "AppBundle.Form.Type.UserType"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "\/users\/{user_id}",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "R\u00e9cup\u00e8re un utilisateur de l'application",
+                    "nickname": "get_users",
+                    "parameters": [
+                        {
+                            "paramType": "path",
+                            "name": "user_id",
+                            "type": "string",
+                            "required": true
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "See standard HTTP status code reason for 200",
+                            "responseModel": "AppBundle.Entity.User"
+                        }
+                    ],
+                    "type": "AppBundle.Entity.User"
+                },
+                {
+                    "method": "GET",
+                    "summary": "R\u00e9cup\u00e8re un utilisateur de l'application",
+                    "nickname": "get_users",
+                    "parameters": [
+                        {
+                            "paramType": "path",
+                            "name": "user_id",
+                            "type": "string",
+                            "required": true
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "See standard HTTP status code reason for 200",
+                            "responseModel": "AppBundle.Entity.User"
+                        }
+                    ],
+                    "type": "AppBundle.Entity.User"
+                }
+            ]
+        }
+    ],
+    "models": {
+        "AppBundle.Entity.User": {
+            "id": "AppBundle.Entity.User",
+            "description": "",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "Identifiant unique de l'utilisateur",
+                    "format": "int32"
+                },
+                "firstname": {
+                    "type": "string",
+                    "description": "Pr\u00e9nom de l'utilisateur"
+                },
+                "lastname": {
+                    "type": "string",
+                    "description": "Nom de famille de l'utilisateur"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email de l'utilsateur"
+                }
+            },
+            "required": []
+        },
+        "AppBundle.Form.Type.UserType.FieldErrors[firstname]": {
+            "id": "AppBundle.Form.Type.UserType.FieldErrors[firstname]",
+            "description": "Field name",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "description": "List of field error messages",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": []
+        },
+        "AppBundle.Form.Type.UserType.FieldErrors[lastname]": {
+            "id": "AppBundle.Form.Type.UserType.FieldErrors[lastname]",
+            "description": "Field name",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "description": "List of field error messages",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": []
+        },
+        "AppBundle.Form.Type.UserType.FieldErrors[plainPassword]": {
+            "id": "AppBundle.Form.Type.UserType.FieldErrors[plainPassword]",
+            "description": "Field name",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "description": "List of field error messages",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": []
+        },
+        "AppBundle.Form.Type.UserType.FieldErrors[email]": {
+            "id": "AppBundle.Form.Type.UserType.FieldErrors[email]",
+            "description": "Field name",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "description": "List of field error messages",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": []
+        },
+        "AppBundle.Form.Type.UserType.Children": {
+            "id": "AppBundle.Form.Type.UserType.Children",
+            "description": "Errors",
+            "properties": {
+                "firstname": {
+                    "$ref": "AppBundle.Form.Type.UserType.FieldErrors[firstname]"
+                },
+                "lastname": {
+                    "$ref": "AppBundle.Form.Type.UserType.FieldErrors[lastname]"
+                },
+                "plainPassword": {
+                    "$ref": "AppBundle.Form.Type.UserType.FieldErrors[plainPassword]"
+                },
+                "email": {
+                    "$ref": "AppBundle.Form.Type.UserType.FieldErrors[email]"
+                }
+            },
+            "required": []
+        },
+        "AppBundle.Form.Type.UserType.FormErrors": {
+            "id": "AppBundle.Form.Type.UserType.FormErrors",
+            "description": "List of errors",
+            "properties": {
+                "children": {
+                    "$ref": "AppBundle.Form.Type.UserType.Children"
+                }
+            },
+            "required": []
+        },
+        "AppBundle.Form.Type.UserType": {
+            "id": "AppBundle.Form.Type.UserType",
+            "description": "",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "description": "The status code",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "The error message"
+                },
+                "errors": {
+                    "$ref": "AppBundle.Form.Type.UserType.FormErrors"
+                }
+            },
+            "required": [
+                "message"
+            ]
+        }
+    },
+    "produces": [],
+    "consumes": [],
+    "authorizations": {
+        "apiKey": {
+            "type": "apiKey",
+            "passAs": "header",
+            "keyname": "X-Auth-Token"
+        }
+    }
+}
