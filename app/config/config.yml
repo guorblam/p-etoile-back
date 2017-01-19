@@ -130,3 +130,11 @@ nelmio_api_doc:
         info:
             title:                Rest API
             description:          'Proposition de sortie aux utilisateurs'
+
+nelmio_cors:
+    path:
+        '^/':
+           allow_origin: ['localhost:8081']
+           allow_headers: ['*']
+           allow_methods: ['*']
+           max_age: 36000
