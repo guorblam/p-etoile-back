@@ -19,3 +19,4 @@ Pour lancer le projet :
 	- dbname : petoileback
  - Générer la base de données
  	- php bin/console doctrine:schema:update --dump-sql --force
+ - l'API est accessible à l'adresse localhost:8080
