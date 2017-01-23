@@ -1,0 +1,18 @@
+language: php
+php:
+    - '7.1'
+
+services:
+    - postgresql
+
+install:
+    - cp app/config/parameters.yml.travis app/config/parameters.yml
+    - composer install --dev
+    - php app/console doctrine:database:create
+    - php app/console doctrine:schema:update --force
+
+script: phpunit --coverage-text
+
+notifications:
+    email:
+        - t.leguen@cs2i-lorient.fr
