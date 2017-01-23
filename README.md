@@ -2,11 +2,11 @@ P* - BackEnd
 ============
 
 Pour lancer le projet :
-
  - Installer vagrant : https://www.vagrantup.com/
  - Installer git : https://git-for-windows.github.io/
  - Cloner le projet :
  	- git clone https://github.com/guorblam/p-etoile-back
+  - cd p-etoile-back
  - Importer la box vagrant du projet
  	- vagrant box add guorblam/p-etoile-back
  - Démarrer la box vagrant
@@ -21,4 +21,5 @@ Pour lancer le projet :
 	- dbpassword : postgres
 	- dbname : petoileback
  - Générer la base de données
- 	- doctrine generate:schema
+ 	- php bin/console doctrine:schema:update --dump-sql --force
+ - l'API est accessible à l'adresse localhost:8080
