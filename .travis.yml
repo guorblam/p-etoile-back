@@ -1,12 +1,13 @@
 language: php
 php:
-    - '7.1'
+    - '7.0'
 
 services:
     - postgresql
 
 install:
     - cp app/config/parameters.yml.travis app/config/parameters.yml
+    - psql -U postgres -c 'CREATE DATABASE petoileback;'
     - composer install --dev
     - php app/console doctrine:database:create
     - php app/console doctrine:schema:update --force
