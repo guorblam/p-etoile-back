@@ -110,7 +110,7 @@ class User implements UserInterface
 
     /**
      * @return mixed
-     */
+    */
     public function getPlainPassword()
     {
         return $this->plainPassword;

@@ -8,6 +8,37 @@
 
 namespace Test\AppBundle\Controller;
 
-class UserControllerTest extends \PHPUnit_Framework_TestCase
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+class UserControllerTest extends WebTestCase
 {
+    protected $firstName = "";
+    protected $lastName = "";
+    protected $trustableEmail = "";
+    protected $untrustableEmail = "";
+    protected $badEmail = "";
+    protected $plainPassword = "";
+
+    protected function setUp()
+    {
+        $this->firstName = "testFirstName";
+        $this->lastName = "testLastName";
+        $this->trustableEmail = "test@cs2i-lorient.fr";
+        $this->untrustableEmail = "test@test.test";
+        $this->badEmail = "testBadEmail";
+        $this->plainPassword = "testPassword";
+    }
+
+    public function testInscription()
+    {
+        $client = static::createClient();
+        $crawler = $client->request(
+            'POST',
+            '/addUser',
+            array('firstname', $this->firstName),
+            array('lastname', $this->lastName),
+            array('email', $this->badEmail),
+            array('plainPassword',$this->plainPassword)
+        );
+    }
 }
