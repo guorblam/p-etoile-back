@@ -6,8 +6,7 @@ services:
     - postgresql
 
 install:
-    - cp app/config/parameters.yml.travis app/config/parameters.yml
-    - psql -U postgres -c 'CREATE DATABASE petoileback;'
+    - cp app/config/parameters.yml app/config/parameters.yml.travis
     - composer install --dev
     - php bin/console doctrine:database:create
     - php bin/console doctrine:schema:update --force
