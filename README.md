@@ -4,6 +4,7 @@ P* - BackEnd
 Pour lancer le projet :
  - Installer vagrant : https://www.vagrantup.com/
  - Installer git : https://git-for-windows.github.io/
+ - Installer virtual-box : https://www.virtualbox.org/
  - Cloner le projet :
  	- git clone https://github.com/guorblam/p-etoile-back
   - cd p-etoile-back
