@@ -1,0 +1,5 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_name: petoileback
+    database_user: postgres
+    database_password: 
