@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
@@ -38,7 +39,7 @@ class User implements UserInterface
 
     /**
      * Email de l'utilsateur
-     *
+     * @Assert\Email(message = "We'll need a valid email address.", strict = true)
      * @ORM\Column(type="string")
      */
     protected $email;

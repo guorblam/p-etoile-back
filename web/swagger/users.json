@@ -291,6 +291,10 @@
             "id": "AppBundle.Entity.User",
             "description": "",
             "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "Email de l'utilsateur"
+                },
                 "id": {
                     "type": "integer",
                     "description": "Identifiant unique de l'utilisateur",
@@ -303,10 +307,6 @@
                 "lastname": {
                     "type": "string",
                     "description": "Nom de famille de l'utilisateur"
-                },
-                "email": {
-                    "type": "string",
-                    "description": "Email de l'utilsateur"
                 }
             },
             "required": []
