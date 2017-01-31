@@ -11,7 +11,7 @@ Feature: Basic register
 
   Scenario: Registering with a cs2i-lorient.fr domain
     Given a user called "Romain"
-    And "Becmeur"
+    And has a lastname "Becmeur"
     And an email adress "r.becmeur@cs2i-lorient.fr"
     And belonging to the promotion 10
     And who wants to use the password "strong password"
@@ -22,7 +22,7 @@ Feature: Basic register
 
   Scenario: Registering with a different email adress
     Given a user called "Antoine"
-    And "Le Guen"
+    And has a lastname "Le Guen"
     And an email adress "a.leguen@gmail.com"
     And belonging to the promotion 10
     And who wants to use the password "anotherStrongPassword"
@@ -33,7 +33,8 @@ Feature: Basic register
 
   Scenario: Registering with an email adress that has already been set as trusted
     Given a user called "Yohann"
-    And "Cabelguen"
+    And and has a lastname "Cabelguen"
+    And a registered email adress "y.cabelguen@gmail.com" in the database
     And an email adress "y.cabelguen@gmail.com"
     And having passed the preselection tests
     And who wants to use the password "strongPasswordToo"
@@ -56,7 +57,7 @@ Feature: Basic register
 
   Scenario: Registering with wrong informations
     Given a user called "Alain"
-    And "Inisan"
+    And has a lastname "Inisan"
     And he makes a typo in his email adress "a.inisan.fr"
     And he wants a password "notSoStrongPassword"
     When I send the "registering information"
