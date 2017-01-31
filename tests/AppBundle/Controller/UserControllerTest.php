@@ -66,6 +66,17 @@ class UserControllerTest extends WebTestCase
         //TODO : Méthodes d'activation du lien, email vérifié, utilisateur non activé
     }
 
+    public function testRegisterWithTrustedEmail()
+    {
+        $this->initTrustedInformation();
+        $this->sendRequest();
+        $this->registeringSuccessCode();
+        $this->registeringSuccessContent();
+        $this->assertUserRegisteredNotTrusted();
+        $this->getActivationLink();
+        //TODO : Méthode d'activation du lien, émail vérifié, utilisateur activé
+    }
+
     public function testRegisterWithWrongEmail()
     {
         $this->initNotAnEmail();
@@ -98,6 +109,17 @@ class UserControllerTest extends WebTestCase
     public function initNotAnEmail() {
         $this->registeringInformation["email"] = "a.becmeur.fr";
         $this->registeringInformation["promotion"] = "7";
+    }
+
+    public function initTrustedInformation() {
+        $email = "preregistered@gmail.com";
+        $this->insertEmailIntoDatabase($email);
+        $this->registeringInformation["email"] = $email;
+        $this->registeringInformation["promotion"] = "preselection";
+    }
+
+    public function insertEmailIntoDatabase($email) {
+        //TODO : Insérer un email dans la base de données
     }
 
     public function registeringSuccessCode()

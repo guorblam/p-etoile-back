@@ -20,6 +20,15 @@ Feature: Basic register
     And an activation link is generated
     And an email is sent with the activation link
 
+  Scenario: Registering with a different email adress but a non-existing promotion
+    Given a user called "Thomas"
+    And has a lastname "Duval"
+    And an email adresse "t.duval@gmail.com"
+    And belonging to the promotion 1245
+    And who wants to use the password "strong password too"
+    And he sends his registering information
+    Then the request is rejected
+
   Scenario: Registering with a different email adress
     Given a user called "Antoine"
     And has a lastname "Le Guen"
@@ -36,7 +45,7 @@ Feature: Basic register
     And and has a lastname "Cabelguen"
     And a registered email adress "y.cabelguen@gmail.com" in the database
     And an email adress "y.cabelguen@gmail.com"
-    And having passed the preselection tests
+    And having passed the preselection tests (promotion = "preselection")
     And who wants to use the password "strongPasswordToo"
     When he sends his "registering information"
     Then he is registered in the database
