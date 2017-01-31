@@ -15,7 +15,7 @@ Feature: Basic register
     And an email adress "r.becmeur@cs2i-lorient.fr"
     And belonging to the promotion 10
     And who wants to use the password "strong password"
-    When he sends his "registering information"
+    When he sends his registering information
     Then he is registered in the database
     And an activation link is generated
     And an email is sent with the activation link
