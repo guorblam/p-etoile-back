@@ -8,34 +8,18 @@
 
 namespace Test\AppBundle\Controller;
 
+use AppBundle\AppBundle;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use AppBundle\Entity\User;
 
-class UserControllerTest extends WebTestCase
+class UserControllerTest extends \Test\AppBundle\Controller\MasterControllerTests
 {
-    protected $registeringInformation;
-    protected $client;
-    protected $method;
-    protected $uri;
-    protected $server;
     protected $userEntityManager;
 
     public function setUp()
     {
-        self::bootKernel();
-        $this->userEntityManager = static::$kernel->getContainer()
-            ->get('doctrine')
-            ->getManager()
-            ->getRepository('AppBundle:User');
-
-        $this->client = static::createClient();
-        $this->method = 'POST';
-        $this->uri = '/addUser';
-        $this->server = array(
-            'CONTENT_TYPE' => 'application/json'
-        );
-
-        $this->registeringInformation = array(
+        parent::setUp();
+        $this->postInformation = array(
             'firstname'     => 'testName',
             'lastname'      => 'testLastName',
             'plainPassword' => 'testPassword',
@@ -44,47 +28,110 @@ class UserControllerTest extends WebTestCase
         );
     }
 
-    public function testRegisterWithTrustedDomain()
+    public function testReponseCodeRegisterWithTrustedDomain()
     {
         $this->initTrustableInformation();
         $this->sendRequest();
-        $this->registeringSuccessCode();
-        $this->registeringSuccessContent();
-        $this->assertUserRegisteredNotTrusted();
-        $this->getActivationLink();
-        //TODO : Méthodes d'activation du lien, email vérifié, utilisateur activé
+        $this->verifySuccessCode();
     }
 
-    public function testRegisterWithExternalDomain()
+    public function testResponseContentRegisterWithTrustedDomain() {
+        $this->initTrustableInformation();
+        $this->sendRequest();
+        $this->verifySuccessContent();
+        $this->cleanUp($this->postInformation["email"]);
+    }
+
+    public function testVerifyUserRegisteredWithTrustedDomain()
+    {
+        $this->initTrustableInformation();
+        $this->sendRequest();
+        $this->assertEmailNotVerified();
+        $this->cleanUp($this->postInformation["email"]);
+    }
+
+    public function testActivationLinkWithTrustedDomain()
+    {
+        $this->initTrustableInformation();
+        $this->sendRequest();
+        $this->executeActivationLink();
+        $this->assertEmailVerified();
+        $this->cleanUp($this->postInformation["email"]);
+    }
+
+    public function testResponseCodeWithExternalDomain()
     {
         $this->initNonTrustedInformation();
         $this->sendRequest();
-        $this->registeringSuccessCode();
-        $this->registeringSuccessContent();
-        $this->assertUserRegisteredNotTrusted();
-        $this->getActivationLink();
-        //TODO : Méthodes d'activation du lien, email vérifié, utilisateur non activé
+        $this->verifySuccessCode();
+        $this->cleanUp($this->postInformation["email"]);
     }
 
-    public function testRegisterWithTrustedEmail()
+    public function testResponseContentWithExternalDomain()
+    {
+        $this->initNonTrustedInformation();
+        $this->sendRequest();
+        $this->verifySuccessContent();
+        $this->cleanUp($this->postInformation["email"]);
+    }
+
+    public function testEmailNotVerifiedWithExternalDomain()
+    {
+        $this->initNonTrustedInformation();
+        $this->sendRequest();
+        $this->assertEmailNotVerified();
+        $this->cleanUp($this->postInformation["email"]);
+    }
+
+    public function testActivationLinkWithExternalDomain()
+    {
+        $this->initNonTrustedInformation();
+        $this->sendRequest();
+        $this->executeActivationLink();
+        $this->cleanUp($this->postInformation["email"]);
+    }
+
+    public function testResponseSuccessCodeWithTrustedEmail()
     {
         $this->initTrustedInformation();
         $this->sendRequest();
-        $this->registeringSuccessCode();
-        $this->registeringSuccessContent();
-        $this->assertUserRegisteredNotTrusted();
-        $this->getActivationLink();
-        //TODO : Méthode d'activation du lien, émail vérifié, utilisateur activé
+        $this->verifySuccessCode();
+        $this->cleanUp($this->postInformation["email"]);
     }
 
-    public function testRegisterWithWrongEmail()
+    public function testResponseContentCodeWithTrustedEmail()
+    {
+        $this->initTrustedInformation();
+        $this->sendRequest();
+        $this->verifySuccessContent();
+        $this->cleanUp($this->postInformation["email"]);
+    }
+
+    public function testAssertEmailNotVerifiedWithTrustedEmail()
+    {
+        $this->initTrustedInformation();
+        $this->sendRequest();
+        $this->assertEmailNotVerified();
+        $this->cleanUp($this->postInformation["email"]);
+    }
+
+    public function testActivationLinkWithTrustedEmail()
+    {
+        $this->initTrustedInformation();
+        $this->sendRequest();
+        $this->executeActivationLink();
+        $this->assertEmailVerified();
+        $this->cleanUp($this->postInformation["email"]);
+    }
+
+    public function testResponseFailureCodeWithWrongEmail()
     {
         $this->initNotAnEmail();
         $this->sendRequest();
         $this->registeringFailureCode();
     }
 
-    public function testRegisterWithWrongPromotion()
+    public function testResponseFailureCodeWithWrongPromotion()
     {
         $this->initWrongPromotionInformation();
         $this->sendRequest();
@@ -92,37 +139,37 @@ class UserControllerTest extends WebTestCase
     }
 
     public function initTrustableInformation() {
-        $this->registeringInformation["email"] = "a.becmeur@cs2i-lorient.fr";
-        $this->registeringInformation["promotion"] = "10";
+        $this->postInformation["email"] = "a.becmeur@cs2i-lorient.fr";
+        $this->postInformation["promotion"] = "10";
     }
 
     public function initNonTrustedInformation() {
-        $this->registeringInformation["email"] = "t.duval@gmail.com";
-        $this->registeringInformation["promotion"] = "5";
+        $this->postInformation["email"] = "t.duval@gmail.com";
+        $this->postInformation["promotion"] = "5";
     }
 
     public function initWrongPromotionInformation() {
-        $this->registeringInformation["email"] = "a.becmeur@cs2i-lorient.fr";
-        $this->registeringInformation["promotion"] = "789";
+        $this->postInformation["email"] = "a.becmeur@cs2i-lorient.fr";
+        $this->postInformation["promotion"] = "789";
     }
 
     public function initNotAnEmail() {
-        $this->registeringInformation["email"] = "a.becmeur.fr";
-        $this->registeringInformation["promotion"] = "7";
+        $this->postInformation["email"] = "a.becmeur.fr";
+        $this->postInformation["promotion"] = "7";
     }
 
     public function initTrustedInformation() {
         $email = "preregistered@gmail.com";
         $this->insertEmailIntoDatabase($email);
-        $this->registeringInformation["email"] = $email;
-        $this->registeringInformation["promotion"] = "preselection";
+        $this->postInformation["email"] = $email;
+        $this->postInformation["promotion"] = "preselection";
     }
 
     public function insertEmailIntoDatabase($email) {
         //TODO : Insérer un email dans la base de données
     }
 
-    public function registeringSuccessCode()
+    public function verifySuccessCode()
     {
         $this->assertEquals(201, $this->client->getResponse()->getStatusCode());
     }
@@ -132,43 +179,43 @@ class UserControllerTest extends WebTestCase
         $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
     }
 
-    public function getActivationLink() {
+    public function executeActivationLink() {
         $user = $this->userEntityManager
-            ->findByEmail($this->registeringInformation["email"]);
-        $this->assertNotNull($user->getActivationLink());
+            ->findByEmail($this->postInformation["email"]);
+        $activationLink = $user->getActivationLink();
+        //TODO : Méthode d'exécution du lien
     }
 
-    public function registeringSuccessContent()
+    public function verifySuccessContent()
     {
         $content = json_decode(
             $this->client->getResponse()->getContent()
         );
-        $this->assertContains(
-            $this->registeringInformation["firstname"],
+        $this->assertEquals(
+            $this->postInformation["firstname"],
             $content["firstname"]
         );
     }
 
-    public function assertUserRegisteredNotTrusted() {
+    public function assertEmailNotVerified() {
         $user = $this->userEntityManager
-            ->findByEmail($this->registeringInformation["email"]);
+            ->findByEmail($this->postInformation["email"]);
         $this->assertNotNull($user);
-        $this->assertFalse($user->getRegistrationStatus);
-        $this->assertFalse($user->getEmailVerificationStatus);
+        $this->assertFalse($user->getEmailVerificationStatus());
     }
 
-    public function sendRequest()
-    {
-        $this->client->request(
-            $this->method,
-            $this->uri,
-            array(),
-            array(),
-            $this->server,
-            json_encode(
-                $this->registeringInformation
-            ),
-            true
-        );
+    public function assertEmailVerified() {
+         $user = $this->userEntityManager
+            ->findByEmail($this->postInformation["email"]);
+        $this->assertNotNull($user);
+        $this->assertTrue($user->getRegistrationStatus());
+        $this->assertTrue($user->getEmailVerificationStatus());
+    }
+
+    public function cleanUp($email) {
+        $user = $this->userEntityManager
+            ->findByEmail($email);
+        $this->userEntityManager->remove($user);
+        $this->userEntityManager->flush();
     }
 }
