@@ -39,12 +39,12 @@ Démarrage
  Lancement des tests
  -------------------
  
-Utilisation de PHPUnit en tant que vendor de l'application :
+Utilisation de PHPUnit en tant que vendor de l'application. Les tests utilisent une surcouche pour factoriser certains éléments tels que la connection ou l'envoi d'une requête.
 
 - S'assurer que l'on est bien dans la machine vagrant
     - Sinon : 
         - vagrant ssh
         - cd /vagrant
 - Lancer l'exécutable phpunit
-    - vendor/bin/phpunit
+    - phpunit --bootstrap tests/AppBundle/Controller/MasterControllerTests.php
   
