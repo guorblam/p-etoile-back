@@ -87,10 +87,21 @@ class UserController extends Controller
             // le mot de passe en claire est encodé avant la sauvegarde
             $encoded = $encoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($encoded);
-            $em = $this->get('doctrine.orm.entity_manager');
-            $em->persist($user);
-            $em->flush();
-            return $user;
+            //vérification du domaine de l'email
+            $testDomaine=$this->isDomainOk($this->getDomainFromEmail($user->getEmail()));
+            //test de la promotion
+            $testPromotion = $this->isPromotionOk($user->getPromotion());
+            if($testDomaine===true&&$testPromotion===true){
+                $em = $this->get('doctrine.orm.entity_manager');
+                $em->persist($user);
+                $em->flush();
+                return $user;
+            }else{
+                $this->invalidCredentials();
+            }
+
+
+
         } else {
             return $form;
         }
@@ -181,5 +192,40 @@ class UserController extends Controller
     private function userNotFound()
     {
         return \FOS\RestBundle\View\View::create(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+    }
+
+    private function isPromotionOk($promotion){
+        $year = date('Y');
+        if($year-2005<$promotion){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    private function isDomainOk($domaine){
+        $domain = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('AppBundle:Domaine')
+            ->findOneByDomaine($domaine);
+        if(!empty($domain)){
+            if($domain->getTrusted()===true){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    private function getDomainFromEmail($email)
+    {
+        $domain = substr(strrchr($email, "@"), 1);
+        return $domain;
+    }
+
+    private function invalidCredentials()
+    {
+        return \FOS\RestBundle\View\View::create(['message' => 'Invalid credentials'], Response::HTTP_BAD_REQUEST);
     }
 }

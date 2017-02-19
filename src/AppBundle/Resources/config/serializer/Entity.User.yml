@@ -9,3 +9,5 @@ AppBundle\Entity\User:
             groups: ['user', 'preference', 'auth-token']
         email:
             groups: ['user', 'preference', 'auth-token']
+        promotion:
+            groups: ['user', 'preference', 'auth-token']

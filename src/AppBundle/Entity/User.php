@@ -39,7 +39,6 @@ class User implements UserInterface
 
     /**
      * Email de l'utilsateur
-     * @Assert\Email(message = "We'll need a valid email address.", strict = true)
      * @ORM\Column(type="string")
      */
     protected $email;
@@ -50,6 +49,13 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     protected $password;
+
+    /**
+     * Promotion de l'utilisateur
+     *
+     * @ORM\Column(type="integer")
+     */
+    protected $promotion;
 
     protected $plainPassword;
 
@@ -123,6 +129,22 @@ class User implements UserInterface
     public function setPlainPassword($plainPassword)
     {
         $this->plainPassword = $plainPassword;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPromotion()
+    {
+        return $this->promotion;
+    }
+
+    /**
+     * @param mixed $promotion
+     */
+    public function setPromotion($promotion)
+    {
+        $this->promotion = $promotion;
     }
 
     public function getRoles()
