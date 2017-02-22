@@ -26,7 +26,7 @@ Feature: Basic register
     And an email adresse "t.duval@gmail.com"
     And belonging to the promotion 1245
     And who wants to use the password "strong password too"
-    And he sends his registering information
+    When he sends his registering information
     Then the request is rejected
 
   Scenario: Registering with a different email adress
