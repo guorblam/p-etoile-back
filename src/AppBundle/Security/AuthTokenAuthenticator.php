@@ -39,7 +39,6 @@ class AuthTokenAuthenticator implements SimplePreAuthenticatorInterface, Authent
             return;
         }
 
-
         $authTokenHeader = $request->headers->get('X-Auth-Token');
 
         if (!$authTokenHeader) {

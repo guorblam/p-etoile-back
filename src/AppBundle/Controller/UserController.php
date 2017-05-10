@@ -79,7 +79,6 @@ class UserController extends Controller
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user, ['validation_groups'=>['Default', 'New']]);
-
         $form->submit($request->request->all());
 
         if ($form->isValid()) {
@@ -88,10 +87,10 @@ class UserController extends Controller
             $encoded = $encoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($encoded);
             //vérification du domaine de l'email
-            $testDomaine=$this->isDomainOk($this->getDomainFromEmail($user->getEmail()));
+            //$testDomaine=$this->isDomainOk($this->getDomainFromEmail($user->getEmail()));
             //test de la promotion
             $testPromotion = $this->isPromotionOk($user->getPromotion());
-            if($testDomaine===true&&$testPromotion===true){
+            if($testPromotion===true){
                 $em = $this->get('doctrine.orm.entity_manager');
                 $em->persist($user);
                 $em->flush();
