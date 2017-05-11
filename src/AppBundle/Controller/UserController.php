@@ -87,10 +87,10 @@ class UserController extends Controller
             $encoded = $encoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($encoded);
             //vérification du domaine de l'email
-            //$testDomaine=$this->isDomainOk($this->getDomainFromEmail($user->getEmail()));
+            $testDomaine=$this->isDomainOk($this->getDomainFromEmail($user->getEmail()));
             //test de la promotion
             $testPromotion = $this->isPromotionOk($user->getPromotion());
-            if($testPromotion===true){
+            if($testPromotion===true && $testDomaine===true){
                 $em = $this->get('doctrine.orm.entity_manager');
                 $em->persist($user);
                 $em->flush();
