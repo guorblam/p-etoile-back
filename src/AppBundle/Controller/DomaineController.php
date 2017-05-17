@@ -22,4 +22,22 @@ class DomaineController extends Controller
 
         return $domaines;
     }
+
+    /**
+     * @Rest\View()
+     * @Rest\Post("/addDomaine")
+     */
+    public function postDomaineAction(Request $request)
+    {
+        $domaine = new Domaine();
+        $form = $this->createForm(DomaineType::class, $domaine);
+        $form->submit($request->request->all());
+
+        if ($form->isValid()) {
+            $em = $this->get('doctrine.orm.entity_manager');
+            $em->persist($domaine);
+            $em->flush();
+            return $domaine;
+        }
+    }
 }
