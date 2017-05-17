@@ -8,11 +8,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
 use AppBundle\Entity\Domaine;
+use AppBundle\Form\Type\DomaineType;
 
 class DomaineController extends Controller
 {
     /**
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"domaine"})
      * @Rest\Get("/domaines")
      */
     public function getDomainesAction(Request $request){
@@ -24,7 +25,7 @@ class DomaineController extends Controller
     }
 
     /**
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"domaine"})
      * @Rest\Post("/addDomaine")
      */
     public function postDomaineAction(Request $request)
@@ -33,11 +34,10 @@ class DomaineController extends Controller
         $form = $this->createForm(DomaineType::class, $domaine);
         $form->submit($request->request->all());
 
-        if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
             $em->persist($domaine);
             $em->flush();
             return $domaine;
-        }
+
     }
 }

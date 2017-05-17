@@ -1,11 +1,12 @@
 <?php
 namespace AppBundle\Form\Type;
 
-use Doctrine\DBAL\Types\BooleanType;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class DomaineType extends AbstractType
 {
@@ -14,8 +15,8 @@ class DomaineType extends AbstractType
         $builder->add('domaine', TextType::class, [
             'description' => "Domaine"
         ]);
-        $builder->add('trusted', BooleanType::class, [
-            'description' => "trusted ou non"
+        $builder->add('trusted', IntegerType::class,[
+            'description' => "trusted ou pas"
         ]);
     }
 

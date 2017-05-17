@@ -1,9 +1,8 @@
 <?php
 namespace AppBundle\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
+
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -30,7 +29,7 @@ class Domaine
 
     /**
      * etat du domaine (trusted or not)
-     *
+     * @var integer
      * @ORM\Column(type="boolean")
      */
     protected $trusted;

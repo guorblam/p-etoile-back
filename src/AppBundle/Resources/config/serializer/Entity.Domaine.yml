@@ -1,0 +1,7 @@
+AppBundle\Entity\Domaine:
+    exclusion_policy: none
+    properties:
+        domaine:
+            groups: ['domaine']
+        trusted:
+            groups: ['domaine']
