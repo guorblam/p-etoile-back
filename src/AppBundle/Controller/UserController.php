@@ -96,7 +96,7 @@ class UserController extends Controller
                 $em->flush();
                 return $user;
             }else{
-                $this->invalidCredentials();
+                return $this->invalidCredentials();
             }
 
 
