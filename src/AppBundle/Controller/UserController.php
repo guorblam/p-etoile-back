@@ -1,9 +1,13 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Util\TokenGenerator;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -90,17 +94,18 @@ class UserController extends Controller
             $testDomaine=$this->isDomainOk($this->getDomainFromEmail($user->getEmail()));
             //test de la promotion
             $testPromotion = $this->isPromotionOk($user->getPromotion());
-            if($testPromotion===true && $testDomaine===true){
-                $em = $this->get('doctrine.orm.entity_manager');
-                $em->persist($user);
-                $em->flush();
-                return $user;
-            }else{
+            if(!$testPromotion && !$testDomaine) {
                 return $this->invalidCredentials();
             }
+            $em = $this->get('doctrine.orm.entity_manager');
+
+            $this->sendConfirmationMail($user);
 
 
+            $em->persist($user);
+            $em->flush();
 
+            return $user;
         } else {
             return $form;
         }
@@ -127,6 +132,15 @@ class UserController extends Controller
     public function updateUserAction(Request $request)
     {
         return $this->updateUser($request, true);
+    }
+
+    /**
+     * @Rest\View(serializerGroups={"user"})
+     * @Rest\Get("/checkEmail/{id}/{token}")
+     */
+    public function confirmUserAction(Request $request) {
+        $logger = $this->get("monolog.logger.php");
+        $logger->alert("test");
     }
 
     /**
@@ -226,5 +240,26 @@ class UserController extends Controller
     private function invalidCredentials()
     {
         return \FOS\RestBundle\View\View::create(['message' => 'Invalid credentials'], Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @param \AppBundle\Entity\User $user
+     */
+    public function sendConfirmationMail(User $user)
+    {
+        $tokenGenerator = new TokenGenerator();
+
+        $token = $tokenGenerator->generateToken();
+        $user->setConfirmationToken($token);
+        $user->setVerifie(false);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Hello Email Bis')
+            ->setFrom('thisIs@useless.becauseGmailReplacesThisAdress')
+            ->setTo('tholeguen@gmail.com')
+            ->setBody("$token")
+        ;
+
+        $this->get('mailer')->send($message);
     }
 }
