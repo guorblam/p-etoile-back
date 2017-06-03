@@ -136,9 +136,9 @@ class UserController extends Controller
 
     /**
      * @Rest\View(serializerGroups={"user"})
-     * @Rest\Get("/checkEmail/{id}/{token}")
+     * @Rest\Get("/checkUser/{id}/{token}", name="checkUser")
      */
-    public function confirmUserAction(Request $request) {
+    public function checkUserAction(Request $request) {
         $logger = $this->get("monolog.logger.php");
         $logger->alert("test");
     }

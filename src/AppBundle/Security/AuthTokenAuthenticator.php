@@ -45,6 +45,7 @@ class AuthTokenAuthenticator implements SimplePreAuthenticatorInterface, Authent
     /**
      * Fonction de contrôle des tokens.
      * TODO: Améliorer la gestion des tokens dans un fichier de configuration (fichier, yml, ...)
+     * TODO: Normaliser la gestion des url ouvertes pour faire références à des noms de route plutôt qu'aux urls
      *
      * @param Request $request
      * @param $providerKey
@@ -59,9 +60,9 @@ class AuthTokenAuthenticator implements SimplePreAuthenticatorInterface, Authent
         );
 
         $openGetUrls = array(
-            '/domaines'
+            '/domaines',
+            'checkUser'
         );
-
 
         if($this->checkRequestFor("POST", $request, $openPostUrls)) {
             return;
