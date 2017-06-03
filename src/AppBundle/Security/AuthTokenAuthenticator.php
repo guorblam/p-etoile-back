@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Security;
 
+use FOS\RestBundle\Controller\Annotations\Post;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -26,24 +27,46 @@ class AuthTokenAuthenticator implements SimplePreAuthenticatorInterface, Authent
         $this->httpUtils = $httpUtils;
     }
 
+    /**
+     * @param $request Request
+     * @param $http_call string
+     * @param $urls array
+     * @return bool
+     */
+    private function checkRequestFor($method, $request, $urls) {
+        foreach ($urls as $url) {
+            if ($request->getMethod() === $method && $this->httpUtils->checkRequestPath($request, $url)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Fonction de contrôle des tokens.
+     * TODO: Améliorer la gestion des tokens dans un fichier de configuration (fichier, yml, ...)
+     *
+     * @param Request $request
+     * @param $providerKey
+     * @return PreAuthenticatedToken
+     */
     public function createToken(Request $request, $providerKey)
     {
+        $openPostUrls = array(
+            '/auth-tokens',
+            '/addUser',
+            '/addDomaine'
+        );
 
-        $targetUrl = '/auth-tokens';
-        // Si la requête est une création de token, aucune vérification n'est effectuée
-        if ($request->getMethod() === "POST" && $this->httpUtils->checkRequestPath($request, $targetUrl)) {
+        $openGetUrls = array(
+            '/domaines'
+        );
+
+
+        if($this->checkRequestFor("POST", $request, $openPostUrls)) {
             return;
         }
-        $targetUrl = '/addUser';
-        if ($request->getMethod() === "POST" && $this->httpUtils->checkRequestPath($request, $targetUrl)) {
-            return;
-        }
-        $targetUrl = '/domaines';
-        if ($request->getMethod() === "GET" && $this->httpUtils->checkRequestPath($request, $targetUrl)) {
-            return;
-        }
-        $targetUrl = '/addDomaine';
-        if ($request->getMethod() === "POST" && $this->httpUtils->checkRequestPath($request, $targetUrl)) {
+        if($this->checkRequestFor("GET", $request, $openGetUrls)) {
             return;
         }
 
