@@ -15,6 +15,7 @@ use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les anno
 use AppBundle\Form\Type\UserType;
 use AppBundle\Entity\User;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UserController extends Controller
 {
@@ -135,12 +136,27 @@ class UserController extends Controller
     }
 
     /**
+     * TODO: Sécuriser, empêcher de pouvoir recontrôler un utilisateur déjà validé
+     *
      * @Rest\View(serializerGroups={"user"})
-     * @Rest\Get("/checkUser/{id}/{token}", name="checkUser")
+     * @Rest\Get("/user/check/{confirmationToken}", name="checkUser")
      */
     public function checkUserAction(Request $request) {
+        /* @var $logger \Monolog\Logger */
         $logger = $this->get("monolog.logger.php");
-        $logger->alert("test");
+
+        $confirmationToken= $request->get("confirmationToken");
+
+        $em = $this->get("doctrine.orm.entity_manager");
+        /* @var $user \AppBundle\Entity\User */
+        $user = $em->getRepository("AppBundle:User")
+            ->findOneByConfirmationToken($confirmationToken);
+
+        if ($user != null) {
+            $user->setVerifie(true);
+            $user->setConfirmationToken("");
+            $em->flush();
+        }
     }
 
     /**
@@ -243,22 +259,25 @@ class UserController extends Controller
     }
 
     /**
+     * TODO: Créer un template de mail
+     * TODO: Securiser, limiter les tokens dans le temps et initialiser le cadre de protection contre des vérifications de tokens répétées
+     *
      * @param \AppBundle\Entity\User $user
      */
     public function sendConfirmationMail(User $user)
     {
         $tokenGenerator = new TokenGenerator();
 
-        $token = $tokenGenerator->generateToken();
-        $user->setConfirmationToken($token);
+        $confirmationToken = $tokenGenerator->generateToken();
+        $user->setConfirmationToken($confirmationToken);
         $user->setVerifie(false);
+        $url = $this->generateUrl('checkUser', array('confirmationToken' => $confirmationToken),UrlGeneratorInterface::ABSOLUTE_PATH);
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('Hello Email Bis')
+            ->setSubject('Verification Url')
             ->setFrom('thisIs@useless.becauseGmailReplacesThisAdress')
-            ->setTo('tholeguen@gmail.com')
-            ->setBody("$token")
-        ;
+            ->setTo($user->getEmail())
+            ->setBody($url);
 
         $this->get('mailer')->send($message);
     }

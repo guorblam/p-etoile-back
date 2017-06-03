@@ -25,7 +25,6 @@ framework:
         engines: ['twig']
     default_locale:  "%locale%"
     trusted_hosts:   ~
-    trusted_proxies: ~
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id:  session.handler.native_file
@@ -66,9 +65,12 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: "%mailer_transport%"
+    transport: gmail
     username:  "%mailer_user%"
     password:  "%mailer_password%"
+    # spool:
+      # type: file
+      # path: '%kernel.project_dir%/app/spool'
 
 fos_rest:
     routing_loader:
