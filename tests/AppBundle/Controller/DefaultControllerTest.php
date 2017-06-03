@@ -6,10 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {
-    public function testIndex()
-    {
-    }
-
     /**
      * Test des emails. Pour contrôler l'envoi/réception, changer le paramètre swiftmailer -> disable_delivery à false
      */
@@ -17,7 +13,7 @@ class DefaultControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $container = $client->getContainer();
-        $mailer = $container->get('swiftmailer.mailer');
+        $mailer = $container->get('mailer');
         $message = \Swift_Message::newInstance()
             ->setSubject('Hello Email')
             ->setFrom('tdev7635@gmail.com')
