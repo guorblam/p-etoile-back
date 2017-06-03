@@ -57,6 +57,20 @@ class User implements UserInterface
      */
     protected $promotion;
 
+    /**
+     * Token de vérification de l'adresse email
+     *
+     * @ORM\Column(type="string")
+     */
+    protected $confirmationToken;
+
+    /**
+     * Statut de l'utilisateur par rapport à son adresse mail (vérifiée ou non vérifiée)
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $verifie;
+
     protected $plainPassword;
 
     public function getId()
@@ -166,5 +180,25 @@ class User implements UserInterface
     {
         // Suppression des données sensibles
         $this->plainPassword = null;
+    }
+
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    public function setConfirmationToken($confirmationToken)
+    {
+        $this->confirmationToken = $confirmationToken;
+    }
+
+    public function getVerifie()
+    {
+        return $this->verifie;
+    }
+
+    public function setVerifie($verifie)
+    {
+        $this->verifie = $verifie;
     }
 }
