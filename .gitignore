@@ -18,3 +18,5 @@
 /.idea
 /.idea/*
 
+/bin/
+/var/SymfonyRequirements.php
