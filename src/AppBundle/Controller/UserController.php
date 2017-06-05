@@ -1,9 +1,13 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Util\TokenGenerator;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,9 +15,12 @@ use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les anno
 use AppBundle\Form\Type\UserType;
 use AppBundle\Entity\User;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UserController extends Controller
 {
+    const CONFIRMATION_MAIL_SESSION_KEY = 'user_send_confirmation_email/email';
+
     /**
      * @ApiDoc(
      *    resource=true,
@@ -90,17 +97,15 @@ class UserController extends Controller
             $testDomaine=$this->isDomainOk($this->getDomainFromEmail($user->getEmail()));
             //test de la promotion
             $testPromotion = $this->isPromotionOk($user->getPromotion());
-            if($testPromotion===true && $testDomaine===true){
-                $em = $this->get('doctrine.orm.entity_manager');
-                $em->persist($user);
-                $em->flush();
-                return $user;
-            }else{
+            if(!$testPromotion && !$testDomaine) {
                 return $this->invalidCredentials();
             }
+            $em = $this->get('doctrine.orm.entity_manager');
+            $this->sendConfirmationMail($user);
+            $em->persist($user);
+            $em->flush();
 
-
-
+            return $user;
         } else {
             return $form;
         }
@@ -127,6 +132,36 @@ class UserController extends Controller
     public function updateUserAction(Request $request)
     {
         return $this->updateUser($request, true);
+    }
+
+    /**
+     * @Rest\View(serializerGroups={"user"})
+     * @Rest\Get("/user/confirm/{confirmationToken}", name="checkUser")
+     */
+    public function confirmUserAction(Request $request) {
+
+        $userEmailFromSession = $this->get('session')->get(self::CONFIRMATION_MAIL_SESSION_KEY);
+
+        if(empty($userEmailFromSession)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'Adresse email non candidate à vérification'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $confirmationToken= $request->get("confirmationToken");
+
+        $em = $this->get("doctrine.orm.entity_manager");
+        $user = $em->getRepository("AppBundle:User")
+            ->findOneByConfirmationToken($confirmationToken);
+
+        if ($user === null) {
+            return $this->userNotFound();
+        }
+
+        $user->setVerifie(true);
+        $this->get('session')->remove(self::CONFIRMATION_MAIL_SESSION_KEY);
+
+        $em->flush();
+
+        return \FOS\RestBundle\View\View::create(['message' => 'Utilisateur vérifié'], Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -226,5 +261,31 @@ class UserController extends Controller
     private function invalidCredentials()
     {
         return \FOS\RestBundle\View\View::create(['message' => 'Invalid credentials'], Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * TODO: Créer un template de mail avec adresse complète
+     * TODO: Quel est le TTL d'une variable session ?
+     *
+     * @param \AppBundle\Entity\User $user
+     */
+    public function sendConfirmationMail(User $user)
+    {
+        $tokenGenerator = new TokenGenerator();
+
+        $confirmationToken = $tokenGenerator->generateToken();
+        $user->setConfirmationToken($confirmationToken);
+        $user->setVerifie(false);
+        $url = $this->generateUrl('checkUser', array('confirmationToken' => $confirmationToken),UrlGeneratorInterface::ABSOLUTE_PATH);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Verification Url')
+            ->setFrom('thisIs@useless.becauseGmailReplacesThisAdress')
+            ->setTo("tholeguen@gmail.com")
+            ->setBody($url);
+
+        $this->get('session')->set(self::CONFIRMATION_MAIL_SESSION_KEY, $user->getEmail());
+
+        $this->get('mailer')->send($message);
     }
 }
