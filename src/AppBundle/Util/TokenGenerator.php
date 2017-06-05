@@ -21,6 +21,6 @@ class TokenGenerator implements TokenGeneratorInterface
      */
     public function generateToken()
     {
-        return \base64_encode(\random_bytes(32));
+        return \str_replace("/", "", \base64_encode(\random_bytes(32)));
     }
 }

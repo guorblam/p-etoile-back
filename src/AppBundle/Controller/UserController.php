@@ -19,6 +19,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UserController extends Controller
 {
+    const CONFIRMATION_MAIL_SESSION_KEY = 'user_send_confirmation_email/email';
+
     /**
      * @ApiDoc(
      *    resource=true,
@@ -99,10 +101,7 @@ class UserController extends Controller
                 return $this->invalidCredentials();
             }
             $em = $this->get('doctrine.orm.entity_manager');
-
             $this->sendConfirmationMail($user);
-
-
             $em->persist($user);
             $em->flush();
 
@@ -136,27 +135,33 @@ class UserController extends Controller
     }
 
     /**
-     * TODO: Sécuriser, empêcher de pouvoir recontrôler un utilisateur déjà validé
-     *
      * @Rest\View(serializerGroups={"user"})
-     * @Rest\Get("/user/check/{confirmationToken}", name="checkUser")
+     * @Rest\Get("/user/confirm/{confirmationToken}", name="checkUser")
      */
-    public function checkUserAction(Request $request) {
-        /* @var $logger \Monolog\Logger */
-        $logger = $this->get("monolog.logger.php");
+    public function confirmUserAction(Request $request) {
+
+        $userEmailFromSession = $this->get('session')->get(self::CONFIRMATION_MAIL_SESSION_KEY);
+
+        if(empty($userEmailFromSession)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'Adresse email non candidate à vérification'], Response::HTTP_BAD_REQUEST);
+        }
 
         $confirmationToken= $request->get("confirmationToken");
 
         $em = $this->get("doctrine.orm.entity_manager");
-        /* @var $user \AppBundle\Entity\User */
         $user = $em->getRepository("AppBundle:User")
             ->findOneByConfirmationToken($confirmationToken);
 
-        if ($user != null) {
-            $user->setVerifie(true);
-            $user->setConfirmationToken("");
-            $em->flush();
+        if ($user === null) {
+            return $this->userNotFound();
         }
+
+        $user->setVerifie(true);
+        $this->get('session')->remove(self::CONFIRMATION_MAIL_SESSION_KEY);
+
+        $em->flush();
+
+        return \FOS\RestBundle\View\View::create(['message' => 'Utilisateur vérifié'], Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -259,8 +264,8 @@ class UserController extends Controller
     }
 
     /**
-     * TODO: Créer un template de mail
-     * TODO: Securiser, limiter les tokens dans le temps et initialiser le cadre de protection contre des vérifications de tokens répétées
+     * TODO: Créer un template de mail avec adresse complète
+     * TODO: Quel est le TTL d'une variable session ?
      *
      * @param \AppBundle\Entity\User $user
      */
@@ -276,8 +281,10 @@ class UserController extends Controller
         $message = \Swift_Message::newInstance()
             ->setSubject('Verification Url')
             ->setFrom('thisIs@useless.becauseGmailReplacesThisAdress')
-            ->setTo($user->getEmail())
+            ->setTo("tholeguen@gmail.com")
             ->setBody($url);
+
+        $this->get('session')->set(self::CONFIRMATION_MAIL_SESSION_KEY, $user->getEmail());
 
         $this->get('mailer')->send($message);
     }
